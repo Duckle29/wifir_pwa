@@ -133,75 +133,76 @@ $('#connect_btn').click(function() {
 
 	if (client === null) {
 		client = mqtt.connect(settings['mqtt_host'], mqtt_options)
+		
+
+
+		client.on('message', function(topic, payload, packet) {
+			// Payload is Buffer
+			console.log(`Topic: ${topic}, Message: ${payload.toString()}, QoS: ${packet.qos}`)
+
+			Object.entries(sensor_values).forEach((key, value) => {
+				if (topic.endsWith(key[0])) {
+					sensor_values[key[0]] = parseFloat(payload.toString());
+				}
+			})
+
+			$('#temp_out').text(sensor_values['temp'])
+			$('#humi_out').text(sensor_values['humi'])
+
+		})
+
+		client.on('close', function() {
+
+			$('#connect_btn').fadeIn('fast')
+			$('#disconnect_btn').fadeOut('fast')
+		})
+
+		client.on('reconnect', function() {
+
+			$('#connect_btn').fadeOut('fast')
+			$('#disconnect_btn').fadeIn('fast')
+		})
+
+		client.on('connect', function() {
+			console.log('Connected to MQTT')
+
+			$('#connect_btn').fadeOut('fast')
+			$('#disconnect_btn').fadeIn('fast')
+
+			alert_banner('Connected', 'success')
+
+			let feeds = ''
+			feeds = sub_feeds
+			for (let i = 0; i < feeds.length; i++) {
+				feeds[i] = `${settings['mqtt_user']}/feeds/wifir-${settings['device_id']}-${feeds[i]}`
+			}
+
+			client.subscribe(feeds, {
+				qos: 0
+			}, function(error, granted) {
+				if (error) {
+					console.log(error)
+				} else {
+					granted.forEach(element => {
+						console.log(`${element.topic} was subscribed`)
+					});
+				}
+			})
+
+			client.publish(`${settings['mqtt_user']}/feeds/wifir-${settings['device_id']}-config`, 'get_sensors', {
+				qos: 0,
+				retain: false
+			}, function(error) {
+				if (error) {
+					console.log(error)
+				} else {
+					console.log('requested_sensors')
+				}
+			})
+		})
 	} else {
 		client.reconnect()
 	}
-
-
-	client.on('message', function(topic, payload, packet) {
-		// Payload is Buffer
-		console.log(`Topic: ${topic}, Message: ${payload.toString()}, QoS: ${packet.qos}`)
-
-		Object.entries(sensor_values).forEach((key, value) => {
-			if (topic.endsWith(key[0])) {
-				sensor_values[key[0]] = parseFloat(payload.toString());
-			}
-		})
-
-		$('#temp_out').text(sensor_values['temp'])
-		$('#humi_out').text(sensor_values['humi'])
-
-	})
-
-	client.on('close', function() {
-
-		$('#connect_btn').fadeIn('fast')
-		$('#disconnect_btn').fadeOut('fast')
-	})
-
-	client.on('reconnect', function() {
-
-		$('#connect_btn').fadeOut('fast')
-		$('#disconnect_btn').fadeIn('fast')
-	})
-
-	client.on('connect', function() {
-		console.log('Connected to MQTT')
-
-		$('#connect_btn').fadeOut('fast')
-		$('#disconnect_btn').fadeIn('fast')
-
-		alert_banner('Connected', 'success')
-
-		let feeds = ''
-		feeds = sub_feeds
-		for (let i = 0; i < feeds.length; i++) {
-			feeds[i] = `${settings['mqtt_user']}/feeds/wifir-${settings['device_id']}-${feeds[i]}`
-		}
-
-		client.subscribe(feeds, {
-			qos: 0
-		}, function(error, granted) {
-			if (error) {
-				console.log(error)
-			} else {
-				granted.forEach(element => {
-					console.log(`${element.topic} was subscribed`)
-				});
-			}
-		})
-
-		client.publish(`${settings['mqtt_user']}/feeds/wifir-${settings['device_id']}-config`, 'get_sensors', {
-			qos: 0,
-			retain: false
-		}, function(error) {
-			if (error) {
-				console.log(error)
-			} else {
-				console.log('requested_sensors')
-			}
-		})
-	})
 })
 
 $('#disconnect_btn').click(function(){
