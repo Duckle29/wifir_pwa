@@ -6,4 +6,4 @@ Using mqtt.js it connects over websockets to an mqtt broker and subscribes to th
 
 This provides basic control of a heatpump remotely.
 
-![screenshot](screenshot.png)
+![screenshot](screenshot.png) 
