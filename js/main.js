@@ -1,7 +1,7 @@
 let settings = {
-	'device_id': '', // 53d341
+	'device_id': '', // 123abc
 	'mqtt_host': '', // wss://io.adafruit.com:443
-	'mqtt_user': '', // Duckle
+	'mqtt_user': '', // User
 	'mqtt_pass': '', // aio_xxxxxxxxxxxxx
 };
 
