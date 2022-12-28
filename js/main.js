@@ -250,12 +250,12 @@ $('#on_btn').click(function(){
 
 	cmd = `P=${cmd_lut['P']['on']}:M=${cmd_lut['M'][mode]}:T=${temp.toFixed(1)}:`
 	console.log(cmd)
-	//set_state(cmd)
+	set_state(cmd)
 })
 
 $('#off_btn').click(function(){
 	console.log('off')
 	cmd = `P=${cmd_lut['P']['off']}:`
 	console.log(cmd)
-	//set_state(cmd)
+	set_state(cmd)
 })
