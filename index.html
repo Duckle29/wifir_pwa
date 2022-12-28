@@ -46,22 +46,22 @@
                 <div class="modal-body">
                     <form>
                         <div class="mb-3">
-                            <label for="mqttDevice" class="form-label">Device ID</label>
-                            <input type="text" class="form-control" id="mqttDevice">
+                            <label for="device_id" class="form-label">Device ID</label>
+                            <input type="text" class="form-control" id="device_id">
                         </div>
                         <div class="mb-3">
-                            <label for="mqttHost" class="form-label">MQTT host</label>
-                            <input type="email" class="form-control" id="mqttHost"
-                                aria-describedby="mqttHostHelp">
-                            <div id="mqttHostHelp" class="form-text">The URL of the MQTT host. For example wss://io.adafruit.com:443</div>
+                            <label for="mqtt_host" class="form-label">MQTT host</label>
+                            <input type="email" class="form-control" id="mqtt_host"
+                                aria-describedby="mqtt_hostHelp">
+                            <div id="mqtt_hostHelp" class="form-text">The URL of the MQTT host. For example wss://io.adafruit.com:443</div>
                         </div>
                         <div class="mb-3">
-                            <label for="mqttUser" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="mqttUser">
+                            <label for="mqtt_user" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="mqtt_user">
                         </div>
                         <div class="mb-3">
-                            <label for="mqttPass" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="mqttPass">
+                            <label for="mqtt_pass" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="mqtt_pass">
                         </div>
                     </form>
                 </div>
@@ -90,6 +90,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+
+    <!-- idb-keyval -->
+    <script src="https://cdn.jsdelivr.net/npm/idb-keyval@6/dist/umd.js"></script>
 
     <!-- My JS -->
     <script src="js/main.js"></script>
