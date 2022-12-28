@@ -8,10 +8,10 @@ let settings = {
 let sub_feeds = [
 	'temp',
 	'humi',
-	'eco2',
-	'tvoc',
-	'log',
-	'ir-state'
+	// 'eco2',
+	// 'tvoc',
+	// 'log',
+	// 'ir-state'
 ]
 
 let mqtt_options = {
@@ -85,6 +85,10 @@ function alert_banner(message, type, timeout = 5000) {
 
 
 $(document).ready(function() {
+
+	if ('serviceWorker' in navigator) {
+		navigator.serviceWorker.register('./sw.js');
+	}
 
 	for (let key in settings) {
 		idbKeyval.get(key).then((value) => {
@@ -211,4 +215,47 @@ $('#disconnect_btn').click(function(){
 	} else {
 		client.end()
 	}
+})
+
+let cmd_lut = {
+	'M': {
+		'heat': 'Heat',
+		'cool': 'Cool',
+		'auto': 'Auto'
+	},
+	'P': {
+		'on': 'On',
+		'off': 'Off'
+	},
+	'T': ''
+}
+
+function set_state(cmd) {
+	client.publish(`${settings['mqtt_user']}/feeds/wifir-${settings['device_id']}-set-state`, cmd, {
+		qos: 0,
+		retain: false
+	}, function(error) {
+		if (error) {
+			console.log(error)
+		} else {
+			console.log(`set state: ${cmd}`)
+		}
+	})
+}
+
+$('#on_btn').click(function(){
+	console.log('on')
+	let mode = $('#mode_select').val()
+	let temp = parseFloat($('#temp_in').val())
+
+	cmd = `P=${cmd_lut['P']['on']}:M=${cmd_lut['M'][mode]}:T=${temp.toFixed(1)}:`
+	console.log(cmd)
+	//set_state(cmd)
+})
+
+$('#off_btn').click(function(){
+	console.log('off')
+	cmd = `P=${cmd_lut['P']['off']}:`
+	console.log(cmd)
+	//set_state(cmd)
 })

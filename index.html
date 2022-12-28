@@ -5,12 +5,21 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#F8F0E3" />
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    
+    <!-- PWA manifest -->
+    <link rel="manifest" href="manifest.json" />
 
-    <title>Hello, world!</title>
+    <!-- Icons -->
+    <link rel="apple-touch-icon" href="static/icons/maskable_icon_x192.png" />
+    <link rel="shortcut icon" href="static/icons/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="static/icons/favicon.ico" type="image/x-icon">
+
+    <title>WiFIR</title>
 </head>
 
 <body>
@@ -27,13 +36,63 @@
     </svg>
     <div id="top_alerts">
     </div>
-    <h1>WiFIR</h1>
+   
+    <!-- UI -->
+    <div class="container">
+        <h1>WiFIR</h1>
+        <div class="row">
+            <!-- Settings modal -->
+            <!-- Button trigger modal -->
+            <div class="col text-center">
+                <button type="button" class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#settingsModal">
+                    Settings
+                </button>
+            </div>
+            <div class="col text-center">
+                <button type="button" class="btn btn-success w-100" id="connect_btn">Connect</button>
+                <button type="button" class="btn btn-danger w-100" id="disconnect_btn" style="display: none;">Disconnect</button>
+            </div>
+        </div>
+        
+        <!-- Outputs -->
+        <hr/>
+        <br/>
+        <div class="row">
+            <div class="col text-center"><span id="temp_out">0</span> °C</div>
+            <div class="col text-center"><span id="humi_out">0</span> %</div>
+        </div>
+        <br/>
 
-    <!-- Settings modal -->
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#settingsModal">
-        Settings
-    </button>
+        <div class="row">
+            <div class="col">
+                <!-- Inputs -->
+                <form>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="mode_text" style="width: 115px;">Mode</span>
+                        <select class="form-select text-center" id="mode_select" aria-label="Select mode", aria-describedby="mode_text">
+                            <option selected value="heat">Heating</option>
+                            <option value="cool">Cooling</option>
+                            <option value="auto">Auto</option>
+                            <option disabled value="8C">8C</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="temp_in_text" style="width: 115px;">Temperature</span>
+                        <input type="number" step="0.5" class="form-control text-center" id="temp_in" value="18" aria-describedby="temp_in_text">
+                        <span class="input-group-text">°C</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <button type="button" class="btn btn-danger w-100" id="off_btn">Off</button>
+            </div>
+            <div class="col text-center">
+                <button type="button" class="btn btn-success w-100" id="on_btn">On</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
@@ -51,7 +110,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="mqtt_host" class="form-label">MQTT host</label>
-                            <input type="email" class="form-control" id="mqtt_host"
+                            <input type="url" class="form-control" id="mqtt_host"
                                 aria-describedby="mqtt_hostHelp">
                             <div id="mqtt_hostHelp" class="form-text">The URL of the MQTT host. For example wss://io.adafruit.com:443</div>
                         </div>
@@ -72,14 +131,6 @@
             </div>
         </div>
     </div>
-
-    <!-- UI -->
-    <button type="button" class="btn btn-success" id="connect_btn">Connect</button>
-    <button type="button" class="btn btn-danger" id="disconnect_btn" style="display: none;">Disconnect</button>
-
-    <!-- Outputs -->
-    <div><span id="temp_out">0</span> °C</div>
-    <div><span id="humi_out">0</span> %</div>
 
     <!-- Optional JavaScript; -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
