@@ -1,4 +1,4 @@
-let version = '2.0.1'
+let version = '2.0.2'
 let cacheName = 'v' + version + '_wifir-pwa';
 let filesToCache = [
   '/',
