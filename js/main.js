@@ -178,7 +178,7 @@ $('#connect_btn').click(function() {
 			let feeds = ''
 			feeds = sub_feeds
 			for (let i = 0; i < feeds.length; i++) {
-				feeds[i] = `${settings['mqtt_user']}/feeds/wifir-${settings['device_id']}-${feeds[i]}`
+				feeds[i] = `device/feeds/wifir-${settings['device_id']}-${feeds[i]}`
 			}
 
 			client.subscribe(feeds, {
@@ -193,7 +193,7 @@ $('#connect_btn').click(function() {
 				}
 			})
 
-			client.publish(`${settings['mqtt_user']}/feeds/wifir-${settings['device_id']}-config`, 'get_sensors', {
+			client.publish(`device/feeds/wifir-${settings['device_id']}-config`, 'get_sensors', {
 				qos: 0,
 				retain: false
 			}, function(error) {
@@ -231,7 +231,7 @@ let cmd_lut = {
 }
 
 function set_state(cmd) {
-	client.publish(`${settings['mqtt_user']}/feeds/wifir-${settings['device_id']}-set-state`, cmd, {
+	client.publish(`device/feeds/wifir-${settings['device_id']}-set-state`, cmd, {
 		qos: 0,
 		retain: false
 	}, function(error) {
